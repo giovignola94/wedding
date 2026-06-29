@@ -21,84 +21,127 @@
     --text-mid: #6B6058;
     --text-light: #9A8E85;
   }
-  html { scroll-behavior: smooth; }
+
   body { font-family: 'Montserrat', sans-serif; background: var(--ivory); color: var(--text-dark); overflow-x: hidden; }
 
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; justify-content: center; gap: 2.5rem;
-    padding: 1rem 2rem;
-    background: rgba(245,240,234,0.92); backdrop-filter: blur(6px);
-    border-bottom: 0.5px solid var(--dusty-blue-pale);
-  }
-  nav a { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; color: var(--text-mid); transition: color 0.2s; }
-  nav a:hover { color: var(--dusty-blue); }
+  /* ── PAGE SYSTEM ── */
+  .page { display: none; min-height: 100vh; animation: fadeIn 0.4s ease; }
+  .page.active { display: block; }
+  .page-flex { display: none; min-height: 100vh; animation: fadeIn 0.4s ease; }
+  .page-flex.active { display: flex; flex-direction: column; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
+  /* ── HAMBURGER ── */
+  .menu-btn {
+    position: fixed; top: 1.25rem; right: 1.25rem; z-index: 200;
+    width: 44px; height: 44px;
+    background: rgba(245,240,234,0.92); backdrop-filter: blur(8px);
+    border-radius: 50%; border: 0.5px solid var(--dusty-blue-pale);
+    cursor: pointer; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 5px;
+    transition: background 0.2s;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .menu-btn:hover { background: rgba(214,227,238,0.95); }
+  .menu-btn span {
+    display: block; width: 18px; height: 1px;
+    background: var(--text-mid);
+    transition: transform 0.3s, opacity 0.3s;
+    transform-origin: center;
+  }
+  .menu-btn.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .menu-btn.open span:nth-child(2) { opacity: 0; }
+  .menu-btn.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  /* ── OVERLAY ── */
+  .sidebar-overlay {
+    position: fixed; inset: 0; z-index: 150;
+    background: rgba(58,53,48,0.3); backdrop-filter: blur(2px);
+    opacity: 0; pointer-events: none; transition: opacity 0.35s;
+  }
+  .sidebar-overlay.visible { opacity: 1; pointer-events: all; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    position: fixed; top: 0; right: -320px; z-index: 160;
+    width: 280px; height: 100vh;
+    background: rgba(245,240,234,0.98); backdrop-filter: blur(16px);
+    border-left: 0.5px solid var(--dusty-blue-pale);
+    display: flex; flex-direction: column;
+    padding: 5rem 2.5rem 3rem;
+    transition: right 0.4s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: -8px 0 32px rgba(0,0,0,0.08);
+  }
+  .sidebar.open { right: 0; }
+  .sidebar-names { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300; font-style: italic; color: var(--text-dark); margin-bottom: 0.25rem; }
+  .sidebar-date { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dusty-blue); margin-bottom: 2rem; }
+  .sidebar-divider { height: 0.5px; background: linear-gradient(90deg, var(--gold-light), transparent); margin-bottom: 2rem; }
+  .sidebar nav { display: flex; flex-direction: column; gap: 0; }
+  .sidebar nav a {
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    text-decoration: none; color: var(--text-mid);
+    padding: 0.9rem 0;
+    border-bottom: 0.5px solid var(--dusty-blue-pale);
+    transition: color 0.2s, padding-left 0.2s;
+    display: flex; align-items: center; gap: 0.75rem;
+    cursor: pointer;
+  }
+  .sidebar nav a:first-child { border-top: 0.5px solid var(--dusty-blue-pale); }
+  .sidebar nav a:hover { color: var(--dusty-blue); padding-left: 6px; }
+  .sidebar nav a.current { color: var(--dusty-blue); }
+  .nav-icon { font-size: 14px; width: 18px; text-align: center; }
+  .sidebar-footer { margin-top: auto; font-size: 10px; color: var(--text-light); letter-spacing: 0.1em; text-align: center; }
+
+  /* ── HERO ── */
   .hero {
-    min-height: 100vh;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    position: relative; padding: 6rem 2rem 4rem;
-    overflow: hidden;
+    min-height: 100vh; flex-direction: column;
+    align-items: center; justify-content: center;
+    position: relative; padding: 6rem 2rem 4rem; overflow: hidden;
   }
-  .hero-bg {
-    position: absolute; inset: 0;
-    background: linear-gradient(160deg, #D6E3EE 0%, #EBE4F5 30%, var(--ivory) 55%, #EDE6DB 100%);
-    z-index: 0;
-  }
+  .hero-bg { position: absolute; inset: 0; background: linear-gradient(160deg, #D6E3EE 0%, #EBE4F5 30%, var(--ivory) 55%, #EDE6DB 100%); z-index: 0; }
   .hero-mole-img {
-    position: absolute;
-    bottom: 0; left: 50%; transform: translateX(-50%);
-    width: 70%; max-width: 520px;
-    z-index: 1;
-    opacity: 0.13;
-    mix-blend-mode: multiply;
-    pointer-events: none;
-    display: block;
+    position: absolute; bottom: 110px; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 820px; z-index: 1;
+    opacity: 0.22; mix-blend-mode: multiply; pointer-events: none; display: block;
   }
-  .hero-fade-bottom {
-    position: absolute; bottom: 0; left: 0; right: 0; height: 35%;
-    background: linear-gradient(0deg, var(--ivory) 0%, transparent 100%);
-    z-index: 2; pointer-events: none;
-  }
-  .hero-fade-top {
-    position: absolute; top: 0; left: 0; right: 0; height: 20%;
-    background: linear-gradient(180deg, #D6E3EE 0%, transparent 100%);
-    z-index: 2; pointer-events: none;
-  }
+  .hero-fade-bottom { position: absolute; bottom: 0; left: 0; right: 0; height: 35%; background: linear-gradient(0deg, var(--ivory) 0%, transparent 100%); z-index: 2; pointer-events: none; }
+  .hero-fade-top { position: absolute; top: 0; left: 0; right: 0; height: 20%; background: linear-gradient(180deg, #D6E3EE 0%, transparent 100%); z-index: 2; pointer-events: none; }
   .hero-floral { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 2; }
   .hero-floral svg { position: absolute; }
   .hero-content { position: relative; z-index: 3; display: flex; flex-direction: column; align-items: center; }
-
   .hero-eyebrow { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dusty-blue); margin-bottom: 1.5rem; }
   .hero-names { font-family: 'Cormorant Garamond', serif; font-size: clamp(3.5rem, 8vw, 6rem); font-weight: 300; font-style: italic; color: var(--text-dark); text-align: center; line-height: 1.1; }
   .hero-ampersand { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; color: var(--gold); display: block; margin: 0.2rem 0; font-style: normal; }
-
   .divider-line { display: flex; align-items: center; gap: 1rem; margin: 2rem 0; width: 100%; max-width: 320px; }
   .divider-line::before, .divider-line::after { content: ''; flex: 1; height: 0.5px; background: linear-gradient(90deg, transparent, var(--gold-light), transparent); }
   .divider-diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); flex-shrink: 0; }
-
   .hero-date { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--text-mid); }
-
   .countdown-row { display: flex; gap: 2rem; margin-top: 2.5rem; }
   .countdown-item { text-align: center; }
   .countdown-num { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 300; color: var(--dusty-blue); line-height: 1; display: block; }
   .countdown-label { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-light); margin-top: 4px; display: block; }
-
-  .scroll-hint { position: absolute; bottom: 2rem; z-index: 4; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-light); animation: bounce 2s ease infinite; }
+  .scroll-hint { position: absolute; bottom: 2rem; z-index: 4; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-light); animation: bounce 2s ease infinite; cursor: pointer; }
   @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
 
+  /* ── SECTIONS ── */
   section { padding: 5rem 2rem; max-width: 760px; margin: 0 auto; }
   .section-eyebrow { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dusty-blue); margin-bottom: 0.75rem; display: block; }
   .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 300; font-style: italic; color: var(--text-dark); margin-bottom: 2.5rem; line-height: 1.2; }
 
-  .location-card { background: #fff; border-radius: 16px; overflow: hidden; border: 0.5px solid var(--dusty-blue-pale); }
-  .map-embed { width: 100%; height: 260px; }
-  .map-embed iframe { width: 100%; height: 100%; border: none; filter: saturate(0.6) hue-rotate(5deg); }
-  .location-info { padding: 1.75rem 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  /* ── LOCATION ── */
+  .location-grid { display: flex; flex-direction: column; gap: 1.5rem; }
+  .location-card-small { background: #fff; border-radius: 16px; overflow: hidden; border: 0.5px solid var(--dusty-blue-pale); display: flex; flex-direction: column; }
+  .location-card-small .map-embed { height: 240px; }
+  .location-card-small .map-embed iframe { width: 100%; height: 100%; border: none; filter: saturate(0.6) hue-rotate(5deg); }
+  .location-card-small .location-info { padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
+  .location-badge { display: inline-block; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-bottom: 0.25rem; }
+  .badge-chiesa { background: var(--dusty-blue-pale); color: var(--dusty-blue); }
+  .badge-ricevimento { background: #EDE6DB; color: var(--gold); }
   .location-item { display: flex; flex-direction: column; gap: 4px; }
   .location-item-label { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-light); }
   .location-item-value { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--text-dark); }
 
+  /* ── TIMELINE ── */
   .timeline { display: flex; flex-direction: column; position: relative; padding-left: 2rem; }
   .timeline::before { content: ''; position: absolute; left: 4px; top: 8px; bottom: 8px; width: 0.5px; background: linear-gradient(180deg, transparent, var(--dusty-blue-light), var(--blush-light), transparent); }
   .timeline-item { position: relative; padding: 0 0 2rem 1.5rem; }
@@ -107,9 +150,20 @@
   .timeline-event { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--text-dark); margin-bottom: 2px; }
   .timeline-desc { font-size: 13px; color: var(--text-light); line-height: 1.5; }
 
+  /* ── REGALO ── */
+  .regalo-card { background: linear-gradient(135deg, #fff 0%, var(--dusty-blue-pale) 100%); border-radius: 20px; padding: 2.5rem; border: 0.5px solid var(--dusty-blue-pale); text-align: center; }
+  .regalo-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+  .regalo-card p { font-size: 14px; color: var(--text-mid); line-height: 1.7; margin-bottom: 1.5rem; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .iban-box { background: white; border-radius: 12px; padding: 1.25rem 1.5rem; border: 0.5px solid var(--dusty-blue-pale); display: inline-block; width: 100%; max-width: 480px; }
+  .iban-label { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-light); display: block; margin-bottom: 6px; }
+  .iban-value { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--text-dark); letter-spacing: 0.05em; word-break: break-all; }
+  .iban-intestato { font-size: 11px; color: var(--text-light); margin-top: 6px; display: block; }
+
+  /* ── RSVP ── */
   .rsvp-wrap { background: linear-gradient(135deg, #D6E3EE 0%, var(--ivory) 60%, #EDE6DB 100%); border-radius: 20px; padding: 2rem; border: 0.5px solid var(--dusty-blue-pale); }
   .rsvp-wrap iframe { width: 100%; height: 980px; border: none; border-radius: 12px; background: white; display: block; }
 
+  /* ── FOOTER ── */
   footer { text-align: center; padding: 3rem 2rem 2rem; border-top: 0.5px solid var(--dusty-blue-pale); background: var(--ivory-deep); }
   .footer-names { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; font-style: italic; color: var(--text-mid); }
   footer small { font-size: 10px; letter-spacing: 0.1em; color: var(--text-light); display: block; margin-top: 0.5rem; }
@@ -117,26 +171,35 @@
 </head>
 <body>
 
-<nav>
-  <a href="#home">Home</a>
-  <a href="#location">Location</a>
-  <a href="#programma">Programma</a>
-  <a href="#rsvp">RSVP</a>
-</nav>
+<!-- HAMBURGER -->
+<button class="menu-btn" id="menuBtn" aria-label="Menu">
+  <span></span><span></span><span></span>
+</button>
 
-<div id="home" class="hero">
+<!-- OVERLAY -->
+<div class="sidebar-overlay" id="overlay"></div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-names">Giulia &amp; Giovanni</div>
+  <div class="sidebar-date">8 Maggio 2027 · Torino</div>
+  <div class="sidebar-divider"></div>
+  <nav>
+    <a data-page="home" class="nav-link current"><span class="nav-icon">🏠</span> Home</a>
+    <a data-page="location" class="nav-link"><span class="nav-icon">📍</span> Location</a>
+    <a data-page="programma" class="nav-link"><span class="nav-icon">🕐</span> Programma</a>
+    <a data-page="regalo" class="nav-link"><span class="nav-icon">💝</span> Regalo</a>
+    <a data-page="rsvp" class="nav-link"><span class="nav-icon">✉️</span> RSVP</a>
+  </nav>
+  <div class="sidebar-footer">G &amp; G · 08 · 05 · 2027</div>
+</div>
+
+<!-- ═══════════════════════════════ HOME ═══════════════════════════════ -->
+<div id="page-home" class="page-flex hero active">
   <div class="hero-bg"></div>
-
-  <img
-    class="hero-mole-img"
-    src="https://www.zanninoascensori.it/wp-content/uploads/2025/02/Mole-Antonelliana-.jpg"
-    alt=""
-    aria-hidden="true"
-  />
-
+  <img class="hero-mole-img" src="https://www.zanninoascensori.it/wp-content/uploads/2025/02/Mole-Antonelliana-.jpg" alt="" aria-hidden="true"/>
   <div class="hero-fade-bottom"></div>
   <div class="hero-fade-top"></div>
-
   <div class="hero-floral">
     <svg width="340" height="340" viewBox="0 0 340 340" style="top:-40px;left:-80px;opacity:0.6;">
       <ellipse cx="120" cy="80" rx="60" ry="30" fill="#8FA8C8" opacity="0.3" transform="rotate(-30 120 80)"/>
@@ -159,7 +222,6 @@
       <circle cx="260" cy="140" r="5" fill="#8FA8C8" opacity="0.4"/>
     </svg>
   </div>
-
   <div class="hero-content">
     <span class="hero-eyebrow">8 Maggio 2027 · Torino</span>
     <div class="hero-names">
@@ -175,82 +237,98 @@
       <div class="countdown-item"><span class="countdown-num" id="cd-mins">–</span><span class="countdown-label">Minuti</span></div>
     </div>
   </div>
-  <div class="scroll-hint">↓ scopri di più</div>
+  <div class="scroll-hint" data-page="location">↓ scopri di più</div>
 </div>
 
-<div style="background: var(--ivory-deep);">
-<section id="location">
-  <span class="section-eyebrow">Dove ci troviamo</span>
-  <h2 class="section-title">La location</h2>
-  <div class="location-card">
-    <div class="map-embed">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2818.5!2d7.7333602!3d45.0766746!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47886072231fb6b7%3A0xa44654ce3cc37799!2sVia%20Mirabello%2C%203%2C%2010132%20Torino%20TO!5e0!3m2!1sit!2sit!4v1"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade">
-      </iframe>
+<!-- ═══════════════════════════════ LOCATION ═══════════════════════════════ -->
+<div id="page-location" class="page" style="background: var(--ivory-deep);">
+  <section>
+    <span class="section-eyebrow">Dove ci troviamo</span>
+    <h2 class="section-title">Le location</h2>
+    <div class="location-grid">
+      <div class="location-card-small">
+        <div class="map-embed">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2822.0!2d7.6894!3d45.0019!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDXCsDAwJzA2LjgiTiA3wrA0MSczOS44IkU!5e0!3m2!1sit!2sit!4v1&q=Str.+Revigliasco+86+Moncalieri" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="location-info">
+          <span class="location-badge badge-chiesa">⛪ Cerimonia</span>
+          <div class="location-item"><span class="location-item-label">Indirizzo</span><span class="location-item-value">Str. Revigliasco, 86</span></div>
+          <div class="location-item"><span class="location-item-label">Città</span><span class="location-item-value">Moncalieri (TO) 10024</span></div>
+          <div class="location-item"><span class="location-item-label">Orario</span><span class="location-item-value">ore 15:00</span></div>
+          <div class="location-item"><span class="location-item-label">🅿️ Parcheggio</span><span class="location-item-value" style="font-size:0.95rem;">P.za G. Marconi, Moncalieri</span></div>
+        </div>
+      </div>
+      <div class="location-card-small">
+        <div class="map-embed">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2818.5!2d7.7333602!3d45.0766746!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47886072231fb6b7%3A0xa44654ce3cc37799!2sVia%20Mirabello%2C%203%2C%2010132%20Torino%20TO!5e0!3m2!1sit!2sit!4v1" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="location-info">
+          <span class="location-badge badge-ricevimento">🥂 Ricevimento</span>
+          <div class="location-item"><span class="location-item-label">Indirizzo</span><span class="location-item-value">Via Mirabello 3/D</span></div>
+          <div class="location-item"><span class="location-item-label">Città</span><span class="location-item-value">Torino (TO) 10132</span></div>
+          <div class="location-item"><span class="location-item-label">Orario</span><span class="location-item-value">ore 19:30</span></div>
+        </div>
+      </div>
     </div>
-    <div class="location-info">
-      <div class="location-item"><span class="location-item-label">Indirizzo</span><span class="location-item-value">Via Mirabello 3/D</span></div>
-      <div class="location-item"><span class="location-item-label">Città</span><span class="location-item-value">Torino (TO) 10132</span></div>
-      <div class="location-item"><span class="location-item-label">Data</span><span class="location-item-value">8 Maggio 2027</span></div>
-      <div class="location-item"><span class="location-item-label">Orario cerimonia</span><span class="location-item-value">ore 15:00</span></div>
-    </div>
-  </div>
-</section>
+  </section>
 </div>
 
-<section id="programma">
-  <span class="section-eyebrow">La giornata</span>
-  <h2 class="section-title">Programma</h2>
-  <div class="timeline">
-    <div class="timeline-item">
-      <div class="timeline-dot"></div>
-      <div class="timeline-time">14:30</div>
-      <div class="timeline-event">Accoglienza degli ospiti</div>
-      <div class="timeline-desc">Aperitivo di benvenuto e cocktail</div>
+<!-- ═══════════════════════════════ PROGRAMMA ═══════════════════════════════ -->
+<div id="page-programma" class="page">
+  <section>
+    <span class="section-eyebrow">La giornata</span>
+    <h2 class="section-title">Programma</h2>
+    <div class="timeline">
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-time">14:30</div><div class="timeline-event">Accoglienza degli ospiti</div><div class="timeline-desc">Aperitivo di benvenuto e cocktail</div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-time">15:00</div><div class="timeline-event">Cerimonia</div><div class="timeline-desc">Il momento più atteso</div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-time">16:30</div><div class="timeline-event">Foto &amp; festeggiamenti</div><div class="timeline-desc">Sessione fotografica e brindisi</div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-time">19:30</div><div class="timeline-event">Cena di gala</div><div class="timeline-desc">Cena seduta con menù degustazione</div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-time">22:00</div><div class="timeline-event">Taglio della torta &amp; balli</div><div class="timeline-desc">Si festeggia fino a tardi!</div></div>
     </div>
-    <div class="timeline-item">
-      <div class="timeline-dot"></div>
-      <div class="timeline-time">15:00</div>
-      <div class="timeline-event">Cerimonia</div>
-      <div class="timeline-desc">Il momento più atteso</div>
-    </div>
-    <div class="timeline-item">
-      <div class="timeline-dot"></div>
-      <div class="timeline-time">16:30</div>
-      <div class="timeline-event">Foto &amp; festeggiamenti</div>
-      <div class="timeline-desc">Sessione fotografica e brindisi</div>
-    </div>
-    <div class="timeline-item">
-      <div class="timeline-dot"></div>
-      <div class="timeline-time">19:30</div>
-      <div class="timeline-event">Cena di gala</div>
-      <div class="timeline-desc">Cena seduta con menù degustazione</div>
-    </div>
-    <div class="timeline-item">
-      <div class="timeline-dot"></div>
-      <div class="timeline-time">22:00</div>
-      <div class="timeline-event">Taglio della torta &amp; balli</div>
-      <div class="timeline-desc">Si festeggia fino a tardi!</div>
-    </div>
-  </div>
-</section>
 
-<div style="background: var(--ivory-deep); padding: 5rem 2rem;">
-<div style="max-width:760px; margin:0 auto;" id="rsvp">
-  <span class="section-eyebrow">Conferma presenza</span>
-  <h2 class="section-title">RSVP</h2>
-  <div class="rsvp-wrap">
-    <iframe
-      src="https://docs.google.com/forms/d/e/1FAIpQLSfi-kVmp12RxXZY9CYRCVTywSWjXpAVN8aj94NBIp2sIuh4Wg/viewform?embedded=true"
-      frameborder="0"
-      marginheight="0"
-      marginwidth="0">
-      Caricamento…
-    </iframe>
-  </div>
+    <!-- BANNER FEDI dentro programma come chiusura poetica -->
+    <div style="margin-top: 3rem; position: relative; border-radius: 20px; overflow: hidden; height: 260px; display: flex; align-items: center; justify-content: center; background: linear-gradient(160deg, #D6E3EE 0%, #EDE6DB 100%);">
+      <img src="https://diecicentojewels.it/wp-content/uploads/Fedi-nuziali-comode-in-oro-giallo-DieciCento-Jewels-1024x576.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.35;mix-blend-mode:multiply;"/>
+      <div style="position:relative;z-index:2;text-align:center;padding:2rem;">
+        <div style="font-size:9px;letter-spacing:0.25em;text-transform:uppercase;color:#6c93c5;margin-bottom:1rem;">8 · 05 · 2027</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,4vw,2.6rem);font-weight:300;font-style:italic;color:#3A3530;">Cogitamus simul, existimus simul</div>
+        <div style="display:flex;align-items:center;gap:1rem;justify-content:center;margin-top:1.2rem;max-width:260px;margin-left:auto;margin-right:auto;">
+          <div style="flex:1;height:0.5px;background:linear-gradient(90deg,transparent,#C9A84C);"></div>
+          <div style="width:6px;height:6px;background:#C9A84C;transform:rotate(45deg);flex-shrink:0;"></div>
+          <div style="flex:1;height:0.5px;background:linear-gradient(90deg,#C9A84C,transparent);"></div>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
+
+<!-- ═══════════════════════════════ REGALO ═══════════════════════════════ -->
+<div id="page-regalo" class="page">
+  <section>
+    <span class="section-eyebrow">Un pensiero per noi</span>
+    <h2 class="section-title">Il regalo</h2>
+    <div class="regalo-card">
+      <span class="regalo-icon">💝</span>
+      <p>La vostra presenza è il regalo più bello che possiate farci.<br>
+      Se volete comunque lasciarci un pensiero, potete contribuire al nostro viaggio di nozze con un bonifico:</p>
+      <div class="iban-box">
+        <span class="iban-label">IBAN</span>
+        <span class="iban-value">IT00 X000 0000 0000 0000 0000 000</span>
+        <span class="iban-intestato">Intestato a: Giulia Gariglio / Giovanni Vignola</span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════════════════════════ RSVP ═══════════════════════════════ -->
+<div id="page-rsvp" class="page" style="background: var(--ivory-deep); padding: 5rem 2rem;">
+  <div style="max-width:760px; margin:0 auto;">
+    <span class="section-eyebrow">Conferma presenza</span>
+    <h2 class="section-title">RSVP</h2>
+    <div class="rsvp-wrap">
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfi-kVmp12RxXZY9CYRCVTywSWjXpAVN8aj94NBIp2sIuh4Wg/viewform?embedded=true" frameborder="0" marginheight="0" marginwidth="0">Caricamento…</iframe>
+    </div>
+  </div>
 </div>
 
 <footer>
@@ -259,20 +337,73 @@
 </footer>
 
 <script>
+// ── COUNTDOWN ──
 function countdown() {
   var wedding = new Date('2027-05-08T15:00:00');
-  var now = new Date();
-  var diff = wedding - now;
+  var diff = wedding - new Date();
   if (diff <= 0) return;
-  var days = Math.floor(diff / 86400000);
-  var hours = Math.floor((diff % 86400000) / 3600000);
-  var mins = Math.floor((diff % 3600000) / 60000);
-  document.getElementById('cd-days').textContent = days;
-  document.getElementById('cd-hours').textContent = hours;
-  document.getElementById('cd-mins').textContent = mins;
+  document.getElementById('cd-days').textContent = Math.floor(diff / 86400000);
+  document.getElementById('cd-hours').textContent = Math.floor((diff % 86400000) / 3600000);
+  document.getElementById('cd-mins').textContent = Math.floor((diff % 3600000) / 60000);
 }
 countdown();
 setInterval(countdown, 60000);
+
+// ── PAGE SYSTEM ──
+function showPage(id) {
+  // hide all
+  document.querySelectorAll('.page, .page-flex').forEach(function(p) {
+    p.classList.remove('active');
+  });
+  // show target
+  var target = document.getElementById('page-' + id);
+  if (target) {
+    target.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+  // update sidebar active link
+  document.querySelectorAll('.nav-link').forEach(function(a) {
+    a.classList.toggle('current', a.dataset.page === id);
+  });
+}
+
+// nav links
+document.querySelectorAll('.nav-link').forEach(function(a) {
+  a.addEventListener('click', function() {
+    showPage(this.dataset.page);
+    closeSidebar();
+  });
+});
+
+// scroll hint on hero
+var hint = document.querySelector('.scroll-hint');
+if (hint) {
+  hint.addEventListener('click', function() {
+    showPage(this.dataset.page);
+  });
+}
+
+// ── SIDEBAR ──
+var btn = document.getElementById('menuBtn');
+var sidebar = document.getElementById('sidebar');
+var overlay = document.getElementById('overlay');
+
+function openSidebar() {
+  sidebar.classList.add('open');
+  overlay.classList.add('visible');
+  btn.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeSidebar() {
+  sidebar.classList.remove('open');
+  overlay.classList.remove('visible');
+  btn.classList.remove('open');
+  document.body.style.overflow = '';
+}
+btn.addEventListener('click', function() {
+  sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+});
+overlay.addEventListener('click', closeSidebar);
 </script>
 </body>
 </html>
