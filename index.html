@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="it">
 <head>
 <meta charset="UTF-8">
@@ -23,6 +23,112 @@
   }
 
   body { font-family: 'Montserrat', sans-serif; background: var(--ivory); color: var(--text-dark); overflow-x: hidden; cursor: none; }
+
+
+
+  /* ── CORNICE DECORATIVA ── */
+  .page-frame {
+    position: fixed; inset: 12px; z-index: 40;
+    pointer-events: none;
+    border: 0.5px solid rgba(143,168,200,0.35);
+    border-radius: 4px;
+  }
+  /* angoli decorativi */
+  .page-frame::before, .page-frame::after,
+  .page-frame .fc, .page-frame .fd {
+    content: ''; position: absolute;
+    width: 22px; height: 22px;
+  }
+  .page-frame::before {
+    top: -1px; left: -1px;
+    border-top: 1.5px solid var(--gold);
+    border-left: 1.5px solid var(--gold);
+    border-radius: 3px 0 0 0;
+  }
+  .page-frame::after {
+    top: -1px; right: -1px;
+    border-top: 1.5px solid var(--gold);
+    border-right: 1.5px solid var(--gold);
+    border-radius: 0 3px 0 0;
+  }
+  .page-frame .fc {
+    bottom: -1px; left: -1px;
+    border-bottom: 1.5px solid var(--gold);
+    border-left: 1.5px solid var(--gold);
+    border-radius: 0 0 0 3px;
+  }
+  .page-frame .fd {
+    bottom: -1px; right: -1px;
+    border-bottom: 1.5px solid var(--gold);
+    border-right: 1.5px solid var(--gold);
+    border-radius: 0 0 3px 0;
+  }
+  /* rombi sui lati */
+  .page-frame .fm {
+    content: ''; position: absolute;
+    width: 5px; height: 5px;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+  .page-frame .fm-t { top: -3px; left: 50%; margin-left: -2.5px; }
+  .page-frame .fm-b { bottom: -3px; left: 50%; margin-left: -2.5px; }
+  .page-frame .fm-l { left: -3px; top: 50%; margin-top: -2.5px; }
+  .page-frame .fm-r { right: -3px; top: 50%; margin-top: -2.5px; }
+
+  /* ── CANVAS FUOCHI ── */
+  #fireworks-canvas {
+    position: fixed; inset: 0; z-index: 9500;
+    pointer-events: none;
+  }
+  /* ── LOADING SCREEN ── */
+  #loading-screen {
+    position: fixed; inset: 0; z-index: 9000;
+    background: linear-gradient(160deg, #D6E3EE 0%, #EBE4F5 30%, var(--ivory) 55%, #EDE6DB 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  #loading-screen.hide {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+  }
+  .loading-names {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    font-weight: 300; font-style: italic;
+    color: var(--text-dark); text-align: center; line-height: 1.1;
+    opacity: 0; animation: loadNameIn 1s ease 0.3s forwards;
+  }
+  .loading-amp {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 300; color: var(--gold);
+    display: block; margin: 0.15rem 0; font-style: normal;
+  }
+  .loading-date {
+    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--dusty-blue); margin-top: 1.5rem;
+    opacity: 0; animation: loadNameIn 1s ease 0.7s forwards;
+  }
+  .loading-line {
+    width: 0; height: 0.5px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 1.5rem auto;
+    animation: loadLineIn 1.2s ease 0.5s forwards;
+  }
+  .loading-bar-wrap {
+    width: 120px; height: 1px;
+    background: var(--dusty-blue-pale);
+    border-radius: 2px; margin-top: 2rem; overflow: hidden;
+    opacity: 0; animation: loadNameIn 0.5s ease 0.8s forwards;
+  }
+  .loading-bar {
+    height: 100%; width: 0; background: var(--dusty-blue);
+    animation: loadBar 1.8s ease 0.9s forwards;
+  }
+  @keyframes loadNameIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes loadLineIn { from { width: 0; opacity: 0; } to { width: 200px; opacity: 1; } }
+  @keyframes loadBar    { from { width: 0; } to { width: 100%; } }
 
   /* ── CURSORE PERSONALIZZATO ── */
   .cursor {
@@ -216,6 +322,28 @@
 </head>
 <body>
 
+<!-- CORNICE -->
+<div class="page-frame">
+  <div class="fc"></div><div class="fd"></div>
+  <div class="fm fm-t"></div><div class="fm fm-b"></div>
+  <div class="fm fm-l"></div><div class="fm fm-r"></div>
+</div>
+
+<!-- CANVAS FUOCHI (sopra loading, sotto UI) -->
+<canvas id="fireworks-canvas"></canvas>
+
+<!-- LOADING SCREEN -->
+<div id="loading-screen">
+  <div class="loading-names">
+    Giulia
+    <span class="loading-amp">&amp;</span>
+    Giovanni
+  </div>
+  <div class="loading-line"></div>
+  <div class="loading-date">8 · 05 · 2027 — Torino</div>
+  <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
+</div>
+
 <!-- CURSORE -->
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
@@ -287,6 +415,7 @@
       <div class="countdown-item"><span class="countdown-num" id="cd-days">–</span><span class="countdown-label">Giorni</span></div>
       <div class="countdown-item"><span class="countdown-num" id="cd-hours">–</span><span class="countdown-label">Ore</span></div>
       <div class="countdown-item"><span class="countdown-num" id="cd-mins">–</span><span class="countdown-label">Minuti</span></div>
+      <div class="countdown-item"><span class="countdown-num" id="cd-secs">–</span><span class="countdown-label">Secondi</span></div>
     </div>
   </div>
 
@@ -411,6 +540,162 @@
 </footer>
 
 <script>
+
+// ── FUOCHI D'ARTIFICIO ──
+(function() {
+  var canvas = document.getElementById('fireworks-canvas');
+  var ctx = canvas.getContext('2d');
+  var W, H;
+  var particles = [];
+  var rockets = [];
+  var active = true;
+
+  var COLORS = [
+    [143,168,200], // dusty blue
+    [212,165,165], // blush
+    [201,168,76],  // gold
+    [184,204,223], // blue light
+    [223,192,122], // gold light
+    [255,220,180], // warm white
+  ];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function rand(a,b){ return a + Math.random()*(b-a); }
+
+  function explode(x, y) {
+    var col = COLORS[Math.floor(Math.random()*COLORS.length)];
+    var count = 70 + Math.floor(Math.random()*50);
+    for (var i=0; i<count; i++) {
+      var angle = (Math.PI*2/count)*i + rand(-0.1,0.1);
+      var speed = rand(2.5, 7);
+      particles.push({
+        x:x, y:y,
+        vx: Math.cos(angle)*speed,
+        vy: Math.sin(angle)*speed,
+        alpha: 1,
+        decay: rand(0.012, 0.022),
+        size: rand(3, 6),
+        r: col[0], g: col[1], b: col[2],
+        trail: [],
+        gravity: rand(0.04, 0.09)
+      });
+    }
+  }
+
+  function launchRocket() {
+    var x = rand(W*0.15, W*0.85);
+    rockets.push({
+      x: x, y: H,
+      vx: rand(-0.8, 0.8),
+      vy: rand(-14, -10),
+      alpha: 1,
+      trail: []
+    });
+  }
+
+  // lancio iniziale a cascata
+  var launchCount = 0;
+  function scheduleLaunches() {
+    if (!active || launchCount > 25) return;
+    launchRocket();
+    launchCount++;
+    setTimeout(scheduleLaunches, rand(150, 350));
+  }
+  setTimeout(scheduleLaunches, 400);
+
+  function loop() {
+    if (!active) return;
+    ctx.fillStyle = 'rgba(0,0,0,0)';
+    ctx.clearRect(0, 0, W, H);
+
+    // scia scura semitrasparente
+    ctx.fillStyle = 'rgba(245,240,234,0.18)';
+    ctx.fillRect(0, 0, W, H);
+
+    // razzi
+    for (var i = rockets.length-1; i>=0; i--) {
+      var r = rockets[i];
+      r.trail.push({x:r.x, y:r.y});
+      if (r.trail.length > 8) r.trail.shift();
+
+      r.x += r.vx; r.y += r.vy; r.vy += 0.25;
+      r.alpha -= 0.008;
+
+      // disegna scia
+      for (var t=0; t<r.trail.length; t++) {
+        var a = (t/r.trail.length)*0.5*r.alpha;
+        ctx.beginPath();
+        ctx.arc(r.trail[t].x, r.trail[t].y, 1.5, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(201,168,76,'+a+')';
+        ctx.fill();
+      }
+
+      // esplodi quando rallenta
+      if (r.vy >= -2) {
+        explode(r.x, r.y);
+        rockets.splice(i,1);
+      } else if (r.alpha <= 0) {
+        rockets.splice(i,1);
+      }
+    }
+
+    // particelle
+    for (var j = particles.length-1; j>=0; j--) {
+      var p = particles[j];
+      p.trail.push({x:p.x, y:p.y});
+      if (p.trail.length > 5) p.trail.shift();
+
+      p.x += p.vx; p.y += p.vy;
+      p.vy += p.gravity;
+      p.vx *= 0.98;
+      p.alpha -= p.decay;
+
+      if (p.alpha <= 0) { particles.splice(j,1); continue; }
+
+      // scia particella
+      for (var k=0; k<p.trail.length; k++) {
+        var ta = (k/p.trail.length)*p.alpha*0.4;
+        ctx.beginPath();
+        ctx.arc(p.trail[k].x, p.trail[k].y, p.size*0.5, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba('+p.r+','+p.g+','+p.b+','+ta+')';
+        ctx.fill();
+      }
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba('+p.r+','+p.g+','+p.b+','+p.alpha+')';
+      ctx.fill();
+    }
+
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  // ferma quando loading scompare
+  window.stopFireworks = function() {
+    active = false;
+    setTimeout(function(){
+      ctx.clearRect(0,0,W,H);
+      canvas.style.display = 'none';
+    }, 800);
+  };
+})();
+
+// ── LOADING SCREEN ──
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    var ls = document.getElementById('loading-screen');
+    ls.classList.add('hide');
+    if(window.stopFireworks) window.stopFireworks();
+    setTimeout(function() { ls.style.display = 'none'; }, 900);
+  }, 2600);
+});
+
 // ── CURSORE ──
 var cursor = document.getElementById('cursor');
 var ring = document.getElementById('cursorRing');
@@ -487,9 +772,10 @@ function countdown() {
   document.getElementById('cd-days').textContent  = Math.floor(diff / 86400000);
   document.getElementById('cd-hours').textContent = Math.floor((diff % 86400000) / 3600000);
   document.getElementById('cd-mins').textContent  = Math.floor((diff % 3600000) / 60000);
+  document.getElementById('cd-secs').textContent  = Math.floor((diff % 60000) / 1000);
 }
 countdown();
-setInterval(countdown, 60000);
+setInterval(countdown, 1000);
 
 // ── PAGE SYSTEM ──
 function showPage(id) {
