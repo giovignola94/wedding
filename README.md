@@ -2,7 +2,7 @@
 
 Sito web per il matrimonio di **Giulia Gariglio** e **Giovanni Vignola**, l'**8 maggio 2027** a Torino.
 
-🌐 **Sito live:** [giovignola94.github.io/weeding](https://giovignola94.github.io/weeding)
+🌐 **Sito live:** [giovignola94.github.io/wedding](https://giovignola94.github.io/wedding)
 
 ---
 
@@ -20,7 +20,7 @@ Sito web per il matrimonio di **Giulia Gariglio** e **Giovanni Vignola**, l'**8 
 
 ## Come aggiornare il sito
 
-1. Vai su [github.com/giovignola94/weeding](https://github.com/giovignola94/weeding)
+1. Vai su [github.com/giovignola94/wedding](https://github.com/giovignola94/wedding)
 2. Clicca su `index.html`
 3. Clicca l'icona matita ✏️ in alto a destra
 4. Modifica il contenuto
