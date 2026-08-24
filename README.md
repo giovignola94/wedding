@@ -11,10 +11,15 @@ Sito web per il matrimonio di **Giulia Gariglio** e **Giovanni Vignola**, l'**8 
 | Sezione | Descrizione |
 |---------|-------------|
 | 🏠 Home | Hero con countdown al giorno del matrimonio e Mole Antonelliana in sfondo |
-| 📍 Location | Mappa della chiesa (Str. Revigliasco 86, Moncalieri) e del ricevimento (Via Mirabello 3/D, Torino) |
+| ✉️ Presenze e intolleranze | Form Google per conferma presenza e intolleranze alimentari |
+| 📍 Dove | Mappa della chiesa (Str. Revigliasco 86, Moncalieri) e del ricevimento (Via Mirabello 3/D, Torino) |
 | 🕐 Programma | Timeline della giornata dall'accoglienza al party serale |
 | 💝 Regalo | IBAN per contribuire al viaggio di nozze |
-| ✉️ RSVP | Form Google per conferma presenza e intolleranze alimentari |
+| 📸 Foto | Bottoni per caricare/scaricare le foto dall'album Google Foto condiviso |
+
+L'ordine sopra è anche l'ordine di navigazione (menu laterale e pulsanti "successivo" tra le pagine).
+
+Ogni pagina è raggiungibile anche via link diretto con l'hash nell'URL, ad es. `index.html#foto` — utile per generare un QR code che apra direttamente la pagina foto.
 
 ---
 
@@ -35,6 +40,8 @@ Il sito si aggiorna automaticamente in 1-2 minuti.
 - [ ] **IBAN** — sostituire `IT00 X000 0000 0000 0000 0000 000` con quello reale
 - [ ] **Orari** — verificare gli orari nel programma della giornata
 - [ ] **Google Form** — assicurarsi che il form RSVP sia attivo e collegato al foglio Google
+- [ ] **Album Google Foto** — creare un album condiviso ("chiunque con il link può aggiungere foto"), poi sostituire i due `href="#"` nella pagina Foto (`.foto-cta` e `.foto-cta-secondary`) con il link dell'album
+- [ ] **QR code** — generarlo puntando a `index.html#foto` (o all'URL live), una volta pronto l'album
 
 ---
 
