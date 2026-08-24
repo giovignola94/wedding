@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Giulia & Giovanni — 8 Maggio 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -152,6 +154,12 @@
   .cursor.hovering { width: 8px; height: 8px; background: var(--blush); }
   .cursor-ring.hovering { width: 52px; height: 52px; opacity: 0.35; border-color: var(--blush); }
 
+  /* su touch/mobile non c'è un mouse: ripristina il cursore nativo e nascondi quello custom */
+  @media (hover: none), (pointer: coarse) {
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+  }
+
   /* ── PETALI ── */
   .petal-canvas {
     position: fixed; inset: 0; pointer-events: none; z-index: 50;
@@ -294,7 +302,7 @@
   .iban-value { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--text-dark); letter-spacing: 0.05em; word-break: break-all; }
   .iban-intestato { font-size: 11px; color: var(--text-light); margin-top: 6px; display: block; }
 
-  /* ── RSVP ── */
+  /* ── Presenze e Intolleranze ── */
   .rsvp-wrap { background: linear-gradient(135deg, #D6E3EE 0%, var(--ivory) 60%, #EDE6DB 100%); border-radius: 20px; padding: 2rem; border: 0.5px solid var(--dusty-blue-pale); }
   .rsvp-wrap iframe { width: 100%; height: 980px; border: none; border-radius: 12px; background: white; display: block; }
 
@@ -366,10 +374,10 @@
   <div class="sidebar-divider"></div>
   <nav>
     <a data-page="home" class="nav-link current"><span class="nav-icon">🏠</span> Home</a>
-    <a data-page="location" class="nav-link"><span class="nav-icon">📍</span> Location</a>
+    <a data-page="dove" class="nav-link"><span class="nav-icon">📍</span> Dove</a>
     <a data-page="programma" class="nav-link"><span class="nav-icon">🕐</span> Programma</a>
     <a data-page="regalo" class="nav-link"><span class="nav-icon">💝</span> Regalo</a>
-    <a data-page="rsvp" class="nav-link"><span class="nav-icon">✉️</span> RSVP</a>
+    <a data-page="rsvp" class="nav-link"><span class="nav-icon">✉️</span> Presenze e intolleranze</a>
   </nav>
   <div class="sidebar-footer">G &amp; G · 08 · 05 · 2027</div>
 </div>
@@ -410,7 +418,7 @@
       Giovanni
     </div>
     <div class="divider-line"><div class="divider-diamond"></div></div>
-    <div class="hero-date">Si sposano</div>
+    <div class="hero-date">Notizia shock: ci sposiamo tra...</div>
     <div class="countdown-row">
       <div class="countdown-item"><span class="countdown-num" id="cd-days">–</span><span class="countdown-label">Giorni</span></div>
       <div class="countdown-item"><span class="countdown-num" id="cd-hours">–</span><span class="countdown-label">Ore</span></div>
@@ -423,14 +431,15 @@
   <div class="hero-intro">
     <div class="hero-intro-divider"><span>❀</span></div>
     <p>
-      Siamo felici di condividere con voi uno dei giorni più belli della nostra vita.<br><br>
-      In questo spazio troverete tutto quello che vi serve sapere per celebrare insieme a noi —
-      dove ci troveremo, come si svolgerà la giornata e come farci sapere che ci sarete.<br><br>
-      Vi aspettiamo con il cuore pieno di gioia.
+      Non vediamo l'ora di condividere questo momento con voi. <br><br>
+      Il nostro obiettivo è che sia un evento che ci rappresenti, parli di noi e di voi. <br><br>
+      Ci sarete? <br><br>
+      Confermateci la vostra gradita presenza ed eventuali intolleranze/allergie entro il 1 Aprile 2027. <br><br>
+      P.S. NON è uno scherzo! <br><br>
     </p>
   </div>
 
-  <div class="scroll-hint" data-page="location">↓ scopri di più</div>
+  <div class="scroll-hint" data-page="location">↓ CLICCA QUI</div>
 </div>
 
 <!-- ═══ LOCATION ═══ -->
@@ -459,7 +468,6 @@
           <span class="location-badge badge-ricevimento">🥂 Ricevimento</span>
           <div class="location-item"><span class="location-item-label">Indirizzo</span><span class="location-item-value">Via Mirabello 3/D</span></div>
           <div class="location-item"><span class="location-item-label">Città</span><span class="location-item-value">Torino (TO) 10132</span></div>
-          <div class="location-item"><span class="location-item-label">Orario</span><span class="location-item-value">ore 19:30</span></div>
         </div>
       </div>
     </div>
@@ -492,10 +500,39 @@
           </div>
         </div>
       </div>
-      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-time">17:30</div><div class="timeline-event">Accoglienza degli ospiti</div><div class="timeline-desc">Aperitivo di benvenuto e cocktail</div></div>
-      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-time">18:30</div><div class="timeline-event">Foto &amp; festeggiamenti</div><div class="timeline-desc">Sessione fotografica e brindisi</div></div>
-      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-time">20:00</div><div class="timeline-event">Cena di gala</div><div class="timeline-desc">Cena seduta con menù degustazione</div></div>
-      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-time">22:00</div><div class="timeline-event">Taglio della torta &amp; balli</div><div class="timeline-desc">Si festeggia fino a tardi!</div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-time">17:30/18</div>
+      <div class="timeline-event">Accoglienza in Vigna Chinet</div>
+        <img
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3ZmMTMxMWlxOHUxa2t1azhhank5dHlqcnU3NHZ2czBpazNzMDZhcSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/g9582DNuQppxC/giphy.gif"
+            alt="Cheers"
+            style="width:160px; border-radius:10px; border:0.5px solid var(--dusty-blue-pale); display:block;"
+        />
+      <div class="timeline-desc">Accoglienza, ingressi e saluti</div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-time">18:30</div>
+      <div class="timeline-event">Aperitivo by Carignano Banqueting</div>
+        <img
+            src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3Z3k2OTN6NWM1am51Zzhoejg5aDh1dmVwcmF2cDMzdGVsamEyZm1rYSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/AfZqcfEJWAktQD9mc4/giphy.gif"
+            alt="Aperitif"
+            style="width:160px; border-radius:10px; border:0.5px solid var(--dusty-blue-pale); display:block;"
+        />
+      <div class="timeline-desc">Foto, chiacchiere, cibo e altre sorprese</div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-time">20:00</div>
+      <div class="timeline-event">Cena placèe</div>
+        <img
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdmtnMWh0NXQwMXprYmtsb2UxMThoazBxemdnbHRrcDcxZXdzeXppdiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/jKaFXbKyZFja0/giphy.gif"
+            alt="Dinner"
+            style="width:160px; border-radius:10px; border:0.5px solid var(--dusty-blue-pale); display:block;"
+        />
+      <div class="timeline-desc">Un momento seduti per chi ha male ai piedi all'insegna di pietanze e buon vino</div></div>
+      <div class="timeline-item"><div class="timeline-dot"></div>
+      <div class="timeline-time">22:00</div>
+      <div class="timeline-event">Taglio torta e balli</div>
+        <img
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGpjZTExNnc4cHgxc3NkenoyZ3Q1dWQ5MWQ2N2kwcnU3cmx4Nng3eiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Xw6yFn7frR3Y4/giphy.gif"
+            alt="Dance"
+            style="width:160px; border-radius:10px; border:0.5px solid var(--dusty-blue-pale); display:block;"
+        />
+      <div class="timeline-desc">Che si aprano le danze...</div></div>
     </div>
     <div style="margin-top: 3rem; position: relative; border-radius: 20px; overflow: hidden; height: 260px; display: flex; align-items: center; justify-content: center; background: linear-gradient(160deg, #D6E3EE 0%, #EDE6DB 100%);">
       <img src="https://diecicentojewels.it/wp-content/uploads/Fedi-nuziali-comode-in-oro-giallo-DieciCento-Jewels-1024x576.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.35;mix-blend-mode:multiply;"/>
@@ -523,8 +560,8 @@
     <h2 class="section-title">Il regalo</h2>
     <div class="regalo-card">
       <span class="regalo-icon">💝</span>
-      <p>La vostra presenza è il regalo più bello che possiate farci.<br>
-      Se volete comunque lasciarci un pensiero, potete contribuire al nostro viaggio di nozze con un bonifico:</p>
+      <p>Grazie in anticipo per il vostro tempo e per il vostro affetto.<br>
+      Se volete contribuire con un pensiero, qui sotto trovate le indicazioni:</p>
       <div class="iban-box">
         <span class="iban-label">IBAN</span>
         <span class="iban-value">IT00 X000 0000 0000 0000 0000 000</span>
@@ -538,11 +575,11 @@
   </section>
 </div>
 
-<!-- ═══ RSVP ═══ -->
+<!-- ═══ PRESENZE E INTOLLERANZE ═══ -->
 <div id="page-rsvp" class="page" style="background: var(--ivory-deep); padding: 5rem 2rem;">
   <div style="max-width:760px; margin:0 auto;">
     <span class="section-eyebrow">Conferma presenza</span>
-    <h2 class="section-title">RSVP</h2>
+    <h2 class="section-title"> Presenze e intolleranze</h2>
     <div class="rsvp-wrap">
       <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfi-kVmp12RxXZY9CYRCVTywSWjXpAVN8aj94NBIp2sIuh4Wg/viewform?embedded=true" frameborder="0" marginheight="0" marginwidth="0">Caricamento…</iframe>
     </div>
