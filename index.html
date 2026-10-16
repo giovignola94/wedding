@@ -276,6 +276,7 @@
   .std-wrap.open .std-menu { display: flex; animation: fadeIn 0.3s ease; }
   .std-menu a { display: block; text-align: center; background: #fff; color: var(--dusty-blue); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; padding: 0.8rem 1.5rem; border-radius: 30px; border: 1px solid var(--dusty-blue-light); transition: background 0.2s, color 0.2s; cursor: none; }
   .std-menu a:hover { background: var(--dusty-blue-pale); color: var(--text-dark); }
+  .std-note { display: none; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1rem; color: var(--text-mid); text-align: center; line-height: 1.5; }
 
   .scroll-hint { position: absolute; bottom: 2rem; z-index: 4; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-light); animation: bounce 2s ease infinite; cursor: none; }
   @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
@@ -468,6 +469,7 @@
     <button type="button" class="std-btn" id="stdBtn">📅 Save the date</button>
     <div class="std-menu">
       <a href="save-the-date.ics" id="stdApple">iPhone / Apple</a>
+      <p class="std-note" id="stdNote">Per aggiungere l'evento al Calendario di iPhone apri il sito con Safari, oppure usa Google Calendar o Outlook qui sotto.</p>
       <a target="_blank" rel="noopener" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Matrimonio%20Giulia%20%26%20Giovanni&amp;dates=20270508T133000Z%2F20270508T220000Z&amp;details=Cerimonia%20ore%2015%3A30%20in%20Str.%20Revigliasco%2086%2C%20Moncalieri.%0ARicevimento%20in%20Via%20Mirabello%203%2FD%2C%20Torino.%0ATutte%20le%20info%3A%20https%3A%2F%2Fgiovignola94.github.io%2Fwedding&amp;location=Str.%20Revigliasco%2086%2C%2010024%20Moncalieri%20TO">Google Calendar</a>
       <a target="_blank" rel="noopener" href="https://outlook.live.com/calendar/0/deeplink/compose?path=%2Fcalendar%2Faction%2Fcompose&amp;rru=addevent&amp;subject=Matrimonio%20Giulia%20%26%20Giovanni&amp;startdt=2027-05-08T13%3A30%3A00Z&amp;enddt=2027-05-08T22%3A00%3A00Z&amp;body=Cerimonia%20ore%2015%3A30%20in%20Str.%20Revigliasco%2086%2C%20Moncalieri.%20Ricevimento%20in%20Via%20Mirabello%203%2FD%2C%20Torino.%20Tutte%20le%20info%3A%20https%3A%2F%2Fgiovignola94.github.io%2Fwedding&amp;location=Str.%20Revigliasco%2086%2C%2010024%20Moncalieri%20TO">Outlook</a>
     </div>
@@ -949,34 +951,16 @@ document.getElementById('stdBtn').addEventListener('click', function() {
   document.getElementById('saveTheDate').classList.toggle('open');
 });
 
-// su iPhone/iPad un link .ics viene trattato come "iscriviti a calendario":
-// generando il file al click Safari mostra invece "Aggiungi evento"
+// su iPhone solo Safari passa il file .ics all'app Calendario come singolo evento:
+// negli altri browser (Edge, Chrome, Firefox, app social) mostriamo un avviso
 document.getElementById('stdApple').addEventListener('click', function(e) {
-  var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  if (!isIOS) return;
-  e.preventDefault();
-  var ics = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//Giulia e Giovanni//Matrimonio//IT',
-    'BEGIN:VEVENT',
-    'UID:matrimonio-giulia-giovanni-20270508@giovignola94.github.io',
-    'DTSTAMP:20261016T000000Z',
-    'DTSTART:20270508T133000Z',
-    'DTEND:20270508T220000Z',
-    'SUMMARY:Matrimonio Giulia & Giovanni',
-    'DESCRIPTION:Cerimonia ore 15:30 in Str. Revigliasco 86\\, Moncalieri.\\nRicevimento in Via Mirabello 3/D\\, Torino.\\nTutte le info: https://giovignola94.github.io/wedding',
-    'LOCATION:Str. Revigliasco 86\\, 10024 Moncalieri TO',
-    'URL:https://giovignola94.github.io/wedding',
-    'BEGIN:VALARM',
-    'TRIGGER:-P7D',
-    'ACTION:DISPLAY',
-    'DESCRIPTION:Tra una settimana: matrimonio Giulia & Giovanni!',
-    'END:VALARM',
-    'END:VEVENT',
-    'END:VCALENDAR'
-  ].join('\r\n');
-  window.location.href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+  var ua = navigator.userAgent;
+  var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var notSafari = /CriOS|FxiOS|EdgiOS|OPiOS|GSA|Instagram|FBAN|FBAV/.test(ua);
+  if (isIOS && notSafari) {
+    e.preventDefault();
+    document.getElementById('stdNote').style.display = 'block';
+  }
 });
 
 // ── SIDEBAR ──
