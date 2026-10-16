@@ -468,10 +468,10 @@
   <div class="std-wrap" id="saveTheDate">
     <button type="button" class="std-btn" id="stdBtn">📅 Save the date</button>
     <div class="std-menu">
-      <a href="save-the-date.ics" id="stdApple">iPhone / Apple</a>
-      <p class="std-note" id="stdNote">Per aggiungere l'evento al Calendario di iPhone apri il sito con Safari, oppure usa Google Calendar o Outlook qui sotto.</p>
+      <a href="save-the-date.ics" class="std-ics">iPhone / Apple</a>
+      <p class="std-note" id="stdNote">Per aggiungere l'evento al Calendario di iPhone apri il sito con Safari, oppure usa Google Calendar qui sotto.</p>
       <a target="_blank" rel="noopener" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Matrimonio%20Giulia%20%26%20Giovanni&amp;dates=20270508T133000Z%2F20270508T220000Z&amp;details=Cerimonia%20ore%2015%3A30%20in%20Str.%20Revigliasco%2086%2C%20Moncalieri.%0ARicevimento%20in%20Via%20Mirabello%203%2FD%2C%20Torino.%0ATutte%20le%20info%3A%20https%3A%2F%2Fgiovignola94.github.io%2Fwedding&amp;location=Str.%20Revigliasco%2086%2C%2010024%20Moncalieri%20TO">Google Calendar</a>
-      <a target="_blank" rel="noopener" href="https://outlook.live.com/calendar/0/deeplink/compose?path=%2Fcalendar%2Faction%2Fcompose&amp;rru=addevent&amp;subject=Matrimonio%20Giulia%20%26%20Giovanni&amp;startdt=2027-05-08T13%3A30%3A00Z&amp;enddt=2027-05-08T22%3A00%3A00Z&amp;body=Cerimonia%20ore%2015%3A30%20in%20Str.%20Revigliasco%2086%2C%20Moncalieri.%20Ricevimento%20in%20Via%20Mirabello%203%2FD%2C%20Torino.%20Tutte%20le%20info%3A%20https%3A%2F%2Fgiovignola94.github.io%2Fwedding&amp;location=Str.%20Revigliasco%2086%2C%2010024%20Moncalieri%20TO">Outlook</a>
+      <a href="save-the-date.ics" download="matrimonio-giulia-giovanni.ics" class="std-ics">Outlook</a>
     </div>
   </div>
 
@@ -952,15 +952,20 @@ document.getElementById('stdBtn').addEventListener('click', function() {
 });
 
 // su iPhone solo Safari passa il file .ics all'app Calendario come singolo evento:
-// negli altri browser (Edge, Chrome, Firefox, app social) mostriamo un avviso
-document.getElementById('stdApple').addEventListener('click', function(e) {
-  var ua = navigator.userAgent;
-  var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  var notSafari = /CriOS|FxiOS|EdgiOS|OPiOS|GSA|Instagram|FBAN|FBAV/.test(ua);
-  if (isIOS && notSafari) {
-    e.preventDefault();
-    document.getElementById('stdNote').style.display = 'block';
-  }
+// negli altri browser (Edge, Chrome, Firefox, app social) mostriamo un avviso.
+// su computer il bottone Outlook scarica il .ics, che si apre in Outlook come singolo evento
+var ua = navigator.userAgent;
+var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+var notSafari = /CriOS|FxiOS|EdgiOS|OPiOS|GSA|Instagram|FBAN|FBAV/.test(ua);
+document.querySelectorAll('.std-ics').forEach(function(a) {
+  // su iPhone "download" salverebbe il file in File invece di aprire il Calendario
+  if (isIOS) a.removeAttribute('download');
+  a.addEventListener('click', function(e) {
+    if (isIOS && notSafari) {
+      e.preventDefault();
+      document.getElementById('stdNote').style.display = 'block';
+    }
+  });
 });
 
 // ── SIDEBAR ──
