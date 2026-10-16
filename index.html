@@ -268,6 +268,15 @@
     letter-spacing: 0.01em;
   }
 
+  /* ── SAVE THE DATE ── */
+  .std-wrap { position: relative; z-index: 3; margin-top: 1.5rem; display: flex; flex-direction: column; align-items: center; }
+  .std-btn { font-family: 'Montserrat', sans-serif; display: inline-block; background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: #fff; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; border: none; padding: 0.9rem 2rem; border-radius: 30px; box-shadow: 0 4px 14px rgba(201,168,76,0.35); transition: transform 0.2s, box-shadow 0.2s; cursor: none; }
+  .std-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(201,168,76,0.45); }
+  .std-menu { display: none; flex-direction: column; gap: 0.6rem; margin-top: 1rem; width: 100%; max-width: 260px; }
+  .std-wrap.open .std-menu { display: flex; animation: fadeIn 0.3s ease; }
+  .std-menu a { display: block; text-align: center; background: #fff; color: var(--dusty-blue); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; padding: 0.8rem 1.5rem; border-radius: 30px; border: 1px solid var(--dusty-blue-light); transition: background 0.2s, color 0.2s; cursor: none; }
+  .std-menu a:hover { background: var(--dusty-blue-pale); color: var(--text-dark); }
+
   .scroll-hint { position: absolute; bottom: 2rem; z-index: 4; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-light); animation: bounce 2s ease infinite; cursor: none; }
   @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
 
@@ -452,6 +461,16 @@
       Confermateci la vostra gradita presenza ed eventuali intolleranze/allergie entro il 1 Aprile 2027. <br><br>
       P.S. NON è uno scherzo! <br><br>
     </p>
+  </div>
+
+  <!-- SAVE THE DATE -->
+  <div class="std-wrap" id="saveTheDate">
+    <button type="button" class="std-btn" id="stdBtn">📅 Save the date</button>
+    <div class="std-menu">
+      <a href="save-the-date.ics">iPhone / Apple</a>
+      <a target="_blank" rel="noopener" href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Matrimonio%20Giulia%20%26%20Giovanni&amp;dates=20270508T133000Z%2F20270508T220000Z&amp;details=Cerimonia%20ore%2015%3A30%20in%20Str.%20Revigliasco%2086%2C%20Moncalieri.%0ARicevimento%20in%20Via%20Mirabello%203%2FD%2C%20Torino.%0ATutte%20le%20info%3A%20https%3A%2F%2Fgiovignola94.github.io%2Fwedding&amp;location=Str.%20Revigliasco%2086%2C%2010024%20Moncalieri%20TO">Google Calendar</a>
+      <a target="_blank" rel="noopener" href="https://outlook.live.com/calendar/0/deeplink/compose?path=%2Fcalendar%2Faction%2Fcompose&amp;rru=addevent&amp;subject=Matrimonio%20Giulia%20%26%20Giovanni&amp;startdt=2027-05-08T13%3A30%3A00Z&amp;enddt=2027-05-08T22%3A00%3A00Z&amp;body=Cerimonia%20ore%2015%3A30%20in%20Str.%20Revigliasco%2086%2C%20Moncalieri.%20Ricevimento%20in%20Via%20Mirabello%203%2FD%2C%20Torino.%20Tutte%20le%20info%3A%20https%3A%2F%2Fgiovignola94.github.io%2Fwedding&amp;location=Str.%20Revigliasco%2086%2C%2010024%20Moncalieri%20TO">Outlook</a>
+    </div>
   </div>
 
   <div class="scroll-hint" data-page="rsvp">↓ CLICCA QUI</div>
@@ -924,6 +943,11 @@ document.querySelectorAll('.next-page-btn').forEach(function(btn) {
 
 var hint = document.querySelector('.scroll-hint');
 if (hint) hint.addEventListener('click', function() { showPage(this.dataset.page); });
+
+// ── SAVE THE DATE ──
+document.getElementById('stdBtn').addEventListener('click', function() {
+  document.getElementById('saveTheDate').classList.toggle('open');
+});
 
 // ── SIDEBAR ──
 var btn     = document.getElementById('menuBtn');

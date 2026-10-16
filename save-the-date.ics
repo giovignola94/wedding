@@ -1,0 +1,21 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Giulia e Giovanni//Matrimonio//IT
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:matrimonio-giulia-giovanni-20270508@giovignola94.github.io
+DTSTAMP:20261016T000000Z
+DTSTART:20270508T133000Z
+DTEND:20270508T220000Z
+SUMMARY:Matrimonio Giulia & Giovanni 💍
+DESCRIPTION:Cerimonia ore 15:30 in Str. Revigliasco 86\, Moncalieri.\nRicevimento in Via Mirabello 3/D\, Torino.\nTutte le info: https://giovignola94.github.io/wedding
+LOCATION:Str. Revigliasco 86\, 10024 Moncalieri TO
+URL:https://giovignola94.github.io/wedding
+BEGIN:VALARM
+TRIGGER:-P7D
+ACTION:DISPLAY
+DESCRIPTION:Tra una settimana: matrimonio Giulia & Giovanni!
+END:VALARM
+END:VEVENT
+END:VCALENDAR
