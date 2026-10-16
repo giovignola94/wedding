@@ -1,8 +1,6 @@
 BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Giulia e Giovanni//Matrimonio//IT
-CALSCALE:GREGORIAN
-METHOD:PUBLISH
 BEGIN:VEVENT
 UID:matrimonio-giulia-giovanni-20270508@giovignola94.github.io
 DTSTAMP:20261016T000000Z
